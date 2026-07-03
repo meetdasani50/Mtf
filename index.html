@@ -148,3 +148,55 @@ Designed for Meet Dasani
 
 </body>
 </html>
+
+<script>
+
+const API =
+"https://script.google.com/macros/s/AKfycbxkTxb5BgZq2cikGBgjo3YpBY_seFBtaYyw-pzWQya0jjCM47EWvqBExIpAVQIa16gANg/exec";
+
+fetch(API)
+.then(res=>res.json())
+.then(data=>{
+
+let totalBook=0;
+
+let clients=new Set();
+
+let tls=new Set();
+
+let rows="";
+
+data.forEach(item=>{
+
+clients.add(item["Client code"]);
+
+tls.add(item["TL Name"]);
+
+totalBook+=Number(item["MTF book"])||0;
+
+rows+=`
+<tr>
+<td>${item["Date"]}</td>
+<td>${item["Client code"]}</td>
+<td>${item["Client Name"]}</td>
+<td>${item["TL Name"]}</td>
+<td>₹${item["MTF book"]}</td>
+</tr>
+`;
+
+});
+
+document.getElementById("tableData").innerHTML=rows;
+
+document.getElementById("totalBook").innerHTML="₹"+totalBook.toLocaleString();
+
+document.getElementById("totalClients").innerHTML=clients.size;
+
+document.getElementById("totalTL").innerHTML=tls.size;
+
+document.getElementById("totalRecords").innerHTML=data.length;
+
+})
+.catch(err=>console.log(err));
+
+</script>
